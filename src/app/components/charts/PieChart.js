@@ -1,19 +1,25 @@
 "use client";
-import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { PieChart as RechartsPieChart, Pie, Cell, Tooltip } from "recharts";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-export const PieChart = () => {
-  const data = {
-    labels: ["Electronics", "Clothing", "Food"],
-    datasets: [
-      {
-        label: "Category Distribution",
-        data: [50, 30, 20],
-        backgroundColor: ["#1976d2", "#dc004e", "#f57c00"],
-      },
-    ],
-  };
-  return <Pie data={data} options={{ responsive: true }} />;
-};
+export function PieChart({ data }) {
+  return (
+    <RechartsPieChart width={300} height={200}>
+      <Pie
+        data={data}
+        cx="50%"
+        cy="50%"
+        outerRadius={70}
+        fill="#8884d8"
+        dataKey="value"
+        label
+      >
+        {data.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Pie>
+      <Tooltip />
+    </RechartsPieChart>
+  );
+}

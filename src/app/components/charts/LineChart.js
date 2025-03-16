@@ -1,37 +1,21 @@
 "use client";
-import { Line } from "react-chartjs-2";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
+  LineChart as RechartsLineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
   Tooltip,
-  Legend,
-} from "chart.js";
+} from "recharts";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-export const LineChart = () => {
-  const data = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-    datasets: [
-      {
-        label: "Sales Trend",
-        data: [1200, 1900, 3000, 5000, 2300],
-        borderColor: "#1976d2",
-        fill: false,
-      },
-    ],
-  };
-  return <Line data={data} options={{ responsive: true }} />;
-};
+export function LineChart({ data }) {
+  return (
+    <RechartsLineChart width={300} height={200} data={data}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="month" />
+      <YAxis />
+      <Tooltip />
+      <Line type="monotone" dataKey="sales" stroke="#8884d8" />
+    </RechartsLineChart>
+  );
+}

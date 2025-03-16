@@ -8,6 +8,7 @@ import {
   Typography,
   Box,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
@@ -17,23 +18,19 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // New loading state
   const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setError("Please enter a valid email");
-      return;
-    }
-    if (!password || password.length < 6) {
-      setError("Password must be at least 6 characters");
-      return;
-    }
+    setLoading(true); // Start loading
     try {
       await login(email, password, keepLoggedIn);
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -48,6 +45,7 @@ export default function Login() {
         borderRadius: 2,
         boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
       }}
+      className="shadow-md"
     >
       <Typography
         variant="h4"
@@ -63,11 +61,14 @@ export default function Login() {
       <form onSubmit={handleSubmit}>
         <TextField
           label="Email"
+          type="email"
           fullWidth
           margin="normal"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          error={error && !email}
+          helperText={error && !email ? "Email is required" : ""}
         />
         <TextField
           label="Password"
@@ -77,6 +78,8 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          error={error && !password}
+          helperText={error && !password ? "Password is required" : ""}
         />
         <FormControlLabel
           control={
@@ -92,12 +95,14 @@ export default function Login() {
           variant="contained"
           fullWidth
           sx={{ mt: 2, py: 1.5 }}
+          className="bg-blue-600 hover:bg-blue-700"
+          disabled={loading} // Disable button while loading
         >
-          Login
+          {loading ? <CircularProgress size={24} color="inherit" /> : "Login"}
         </Button>
         <Typography sx={{ mt: 2, textAlign: "center" }}>
           Don’t have an account?{" "}
-          <Link href="/auth/register" className="text-blue-600">
+          <Link href="/register" className="text-blue-600 hover:underline">
             Register
           </Link>
         </Typography>
