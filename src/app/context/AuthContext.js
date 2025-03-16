@@ -2,70 +2,104 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const AuthContext = createContext(undefined);
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [keepLoggedIn, setKeepLoggedIn] = useState(false);
+  const [token, setToken] = useState(null);
   const router = useRouter();
 
+  // Load auth state from localStorage on mount
   useEffect(() => {
-    if (!keepLoggedIn && user) {
-      const timer = setTimeout(() => {
-        logout();
-      }, 60 * 1000); // 1 minute
-      return () => clearTimeout(timer);
+    const storedToken = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
+    if (storedToken && storedUser) {
+      setToken(storedToken);
+      setUser(JSON.parse(storedUser));
     }
-  }, [user, keepLoggedIn]);
+  }, []);
 
-  const login = async (email, password, keep) => {
-    const response = await fetch("/api/login", {
+  // Login function with validation
+  const login = async (email, password, keepLoggedIn) => {
+    if (!email || !password) {
+      throw new Error("Email and password are required");
+    }
+    const res = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, keepLoggedIn }),
     });
-    if (response.ok) {
-      const data = await response.json();
-      setUser(data);
-      setKeepLoggedIn(keep);
-      router.push("/dashboard");
-    } else {
-      throw new Error("Invalid credentials");
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || "Login failed");
     }
+    setToken(data.token);
+    setUser(data.user);
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("keepLoggedIn", keepLoggedIn);
+    router.push("/dashboard");
   };
 
+  // Registration function with validation
   const register = async (email, password, fullName) => {
-    const response = await fetch("/api/register", {
+    if (!email || !password || !fullName) {
+      throw new Error("All fields are required");
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      throw new Error("Invalid email format");
+    }
+    if (password.length < 6) {
+      throw new Error("Password must be at least 6 characters");
+    }
+    const res = await fetch("/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, fullName }),
     });
-    if (response.ok) {
-      const data = await response.json();
-      setUser(data);
-      router.push("/dashboard");
-    } else {
-      throw new Error("Registration failed");
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || "Registration failed");
     }
+    router.push("/login");
   };
 
+  // Logout function
   const logout = () => {
+    setToken(null);
     setUser(null);
-    setKeepLoggedIn(false);
-    router.push("/auth/login");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("keepLoggedIn");
+    router.push("/login");
   };
+
+  // Auto-logout on inactivity (1 minute)
+  useEffect(() => {
+    if (!token || localStorage.getItem("keepLoggedIn") === "true") return;
+
+    let timeout;
+    const resetTimer = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(logout, 60 * 1000);
+    };
+
+    window.addEventListener("mousemove", resetTimer);
+    window.addEventListener("keypress", resetTimer);
+    resetTimer();
+
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener("mousemove", resetTimer);
+      window.removeEventListener("keypress", resetTimer);
+    };
+  }, [token, logout]);
 
   return (
-    <AuthContext.Provider
-      value={{ user, login, register, logout, keepLoggedIn }}
-    >
+    <AuthContext.Provider value={{ user, token, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within AuthProvider");
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);

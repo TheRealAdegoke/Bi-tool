@@ -3,7 +3,6 @@ import { ThemeProvider as CustomThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext";
 import ClientWrapper from "./components/ClientWrapper";
 
-
 export const metadata = {
   title: "BI Tool - Business Intelligence",
   description: "Empower your business with data-driven insights",

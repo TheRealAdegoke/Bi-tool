@@ -1,30 +1,54 @@
 "use client";
 import { DataGrid } from "@mui/x-data-grid";
+import { Box } from "@mui/material";
 
-const columns = [
-  { field: "id", headerName: "ID", width: 90 },
-  { field: "name", headerName: "Name", width: 150 },
-  { field: "email", headerName: "Email", width: 200 },
-  { field: "amount", headerName: "Amount", width: 110, sortable: true },
-];
+export default function DataTable({ data }) {
+  const columns = [
+    { field: "id", headerName: "ID", width: 100, sortable: true },
+    {
+      field: "fullName",
+      headerName: "Full Name",
+      width: 200,
+      sortable: true,
+      filterable: true,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      width: 250,
+      sortable: true,
+      filterable: true,
+    },
+    {
+      field: "sales",
+      headerName: "Sales",
+      width: 150,
+      sortable: true,
+      filterable: true,
+      type: "number", // Enables numeric sorting/filtering
+    },
+  ];
 
-const rows = [
-  { id: 1, name: "John Doe", email: "john@example.com", amount: 123 },
-  { id: 2, name: "Jane Smith", email: "jane@example.com", amount: 456 },
-  { id: 3, name: "Bob Johnson", email: "bob@example.com", amount: 789 },
-];
-
-export default function DataTable() {
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <Box sx={{ height: 400, width: "100%" }} className="shadow-md">
       <DataGrid
-        rows={rows}
+        rows={data}
         columns={columns}
-        pageSizeOptions={[5]}
-        checkboxSelection
-        disableRowSelectionOnClick
-        initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
+        pageSize={5}
+        rowsPerPageOptions={[5, 10, 20]}
+        sortingOrder={["asc", "desc"]}
+        filterMode="client" // Client-side filtering
+        disableSelectionOnClick
+        sx={{
+          "& .MuiDataGrid-columnHeaders": {
+            bgcolor: "background.paper",
+            fontWeight: "bold",
+          },
+          "& .MuiDataGrid-cell": {
+            py: 1,
+          },
+        }}
       />
-    </div>
+    </Box>
   );
 }
