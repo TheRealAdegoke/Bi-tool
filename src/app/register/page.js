@@ -7,17 +7,21 @@ import {
   Box,
   Alert,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
+import { ArrowBack } from "@mui/icons-material";
 import Link from "next/link";
-import { useAuth } from "../context/AuthContext";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // New loading state
+  const [loading, setLoading] = useState(false);
   const { register } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,9 +46,23 @@ export default function Register() {
         bgcolor: "background.paper",
         borderRadius: 2,
         boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+        position: "relative",
       }}
       className="shadow-md"
     >
+      {/* Back Arrow */}
+      <IconButton
+        onClick={() => router.push("/")}
+        sx={{
+          position: "absolute",
+          top: 8,
+          left: 8,
+          color: "text.secondary",
+        }}
+      >
+        <ArrowBack />
+      </IconButton>
+
       <Typography
         variant="h4"
         sx={{ fontWeight: "bold", mb: 3, textAlign: "center" }}
@@ -109,11 +127,7 @@ export default function Register() {
           className="bg-blue-600 hover:bg-blue-700"
           disabled={loading}
         >
-          {loading ? (
-            <CircularProgress size={24} color="inherit" />
-          ) : (
-            "Register"
-          )}
+          {loading ? <CircularProgress size={24} color="inherit" /> : "Register"}
         </Button>
         <Typography sx={{ mt: 2, textAlign: "center" }}>
           Already have an account?{" "}

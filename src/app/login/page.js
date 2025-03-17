@@ -9,28 +9,32 @@ import {
   Box,
   Alert,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
+import { ArrowBack } from "@mui/icons-material";
 import Link from "next/link";
-import { useAuth } from "../context/AuthContext";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // New loading state
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
       await login(email, password, keepLoggedIn);
     } catch (err) {
       setError(err.message);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
@@ -44,9 +48,23 @@ export default function Login() {
         bgcolor: "background.paper",
         borderRadius: 2,
         boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+        position: "relative",
       }}
       className="shadow-md"
     >
+      {/* Back Arrow */}
+      <IconButton
+        onClick={() => router.push("/")}
+        sx={{
+          position: "absolute",
+          top: 8,
+          left: 8,
+          color: "text.secondary",
+        }}
+      >
+        <ArrowBack />
+      </IconButton>
+
       <Typography
         variant="h4"
         sx={{ fontWeight: "bold", mb: 3, textAlign: "center" }}
@@ -96,7 +114,7 @@ export default function Login() {
           fullWidth
           sx={{ mt: 2, py: 1.5 }}
           className="bg-blue-600 hover:bg-blue-700"
-          disabled={loading} // Disable button while loading
+          disabled={loading}
         >
           {loading ? <CircularProgress size={24} color="inherit" /> : "Login"}
         </Button>

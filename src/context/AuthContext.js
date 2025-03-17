@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const router = useRouter();
 
-  // Load auth state from localStorage on mount
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
@@ -19,7 +18,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Login function with validation
   const login = async (email, password, keepLoggedIn) => {
     if (!email || !password) {
       throw new Error("Email and password are required");
@@ -41,7 +39,6 @@ export const AuthProvider = ({ children }) => {
     router.push("/dashboard");
   };
 
-  // Registration function with validation
   const register = async (email, password, fullName) => {
     if (!email || !password || !fullName) {
       throw new Error("All fields are required");
@@ -64,7 +61,6 @@ export const AuthProvider = ({ children }) => {
     router.push("/login");
   };
 
-  // Logout function
   const logout = () => {
     setToken(null);
     setUser(null);
