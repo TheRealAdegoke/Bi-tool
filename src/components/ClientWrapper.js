@@ -3,7 +3,7 @@ import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useTheme } from "../context/ThemeContext";
 import { getTheme } from "../styles/theme";
-import "../../mocks/init-msw";
+import "../mocks/init-msw";
 
 export default function ClientWrapper({ children }) {
   const { mode } = useTheme();

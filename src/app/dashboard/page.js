@@ -10,10 +10,10 @@ import {
   CircularProgress,
 } from "@mui/material";
 import DataTable from "./DataTable";
-import { BarChart } from "../components/charts/BarChart";
-import { LineChart } from "../components/charts/LineChart";
-import { PieChart } from "../components/charts/PieChart";
-import { useAuth } from "../context/AuthContext";
+import { BarChart } from "../../components/charts/BarChart";
+import { LineChart } from "../../components/charts/LineChart";
+import { PieChart } from "../../components/charts/PieChart";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Dashboard() {
   const [data, setData] = useState(null);

@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Business Intelligence (BI) Tool
 
-## Getting Started
+A simple BI tool built with Next.js, Tailwind CSS, and MUI. It has user login/register and a dashboard with business data.
 
-First, run the development server:
+## Links
+- **Live Demo**: [Insert your deployed URL here]
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
+- **Login**: Email/password with "Keep me logged in" option. Logs out after 1 minute if unchecked.
+- **Register**: Sign up with email, password, full name. Shows errors if invalid.
+- **Dashboard**: 
+  - Cards: Total Users, Active Sessions, Sales Revenue.
+  - Charts: Line (sales), Bar (users), Pie (categories) using Recharts.
+  - Table: User data with sorting and filtering (MUI DataGrid).
+  - Protected: Only for logged-in users.
+- **Bonus**: Dark mode.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Used
+- Next.js, Tailwind CSS, MUI
+- Recharts for charts
+- React Context for state
+- MSW for mock APIs
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Setup
+1. **Clone**: `git clone && cd bi-tool`
+2. **Install**: `npm install`
+3. **MSW**: `npx msw init public/`
+4. **Run**: `npm run dev` (visit `http://localhost:3000`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deployment
+- Hosted on Vercel.
+- Push to GitHub, connect to Vercel, deploy.
 
-## Learn More
+## Notes
+- Designed without Figma using my frontend skills.
+- Responsive and clean UI.
+- MSW runs in dev and prod.
 
-To learn more about Next.js, take a look at the following resources:
+## Submission
+- **URL**: [Insert deployed URL]
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Thanks for reviewing!

@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useTheme } from "@/app/context/ThemeContext";
-import Navbar from "./components/Navbar";
-import { GlobeMap } from "./components/GlobeMap";
+import Navbar from "../components/Navbar";
+import { GlobeMap } from "../components/GlobeMap";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function HeroSection() {
   const { mode } = useTheme();
