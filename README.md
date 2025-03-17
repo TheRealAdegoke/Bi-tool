@@ -3,7 +3,7 @@
 A simple BI tool built with Next.js, Tailwind CSS, and MUI. It has user login/register and a dashboard with business data.
 
 ## Links
-- **Live Demo**: [Insert your deployed URL here]
+- **Live Demo**: https://bi-tool-theta.vercel.app/
 
 ## Features
 - **Login**: Email/password with "Keep me logged in" option. Logs out after 1 minute if unchecked.
@@ -37,6 +37,6 @@ A simple BI tool built with Next.js, Tailwind CSS, and MUI. It has user login/re
 - MSW runs in dev and prod.
 
 ## Submission
-- **URL**: [Insert deployed URL]
+- **URL**: https://bi-tool-theta.vercel.app/
 
 Thanks for reviewing!
